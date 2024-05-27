@@ -6,6 +6,7 @@ import Card from '../components/ui/Card';
 import Primarybutton from '../components/ui/PrimaryButton';
 import InstructionText from '../components/ui/InstructionText';
 import {Ionicons,AntDesign} from "@expo/vector-icons";
+import GuessLogItem from '../components/game/GuessLogItem';
 
 
 function generateRandomBetween(min,max,exclude){
@@ -28,7 +29,7 @@ function GameScreen({userNumber,onGameOver}) {
     const [guessRounds,setGuessRounds] = useState([initNumber]);
     useEffect(() =>{
         if(currentGuess === userNumber){
-            onGameOver();
+            onGameOver(guessRounds.length);
         }
     },[currentGuess,userNumber,onGameOver]);
     function nextGuessHandler(direction){ //direction =? lower or greater
@@ -52,6 +53,8 @@ function GameScreen({userNumber,onGameOver}) {
         minBoundary = 1;
         maxBoundary = 100;
     },[]);
+
+    const guessRoundsLength = guessRounds.length;
     
     return (
         <View style={styles.screen}>
@@ -68,10 +71,10 @@ function GameScreen({userNumber,onGameOver}) {
                     </View>
                 </View>
             </Card>
-           <View>
+           <View style={styles.listContainer}>
             {/* {guessRounds.map(round =><Text key={round}>{round}</Text>)} */}
             <FlatList data={guessRounds} 
-                renderItem={(itemData) => <Text>{itemData.item}</Text>} 
+                renderItem={(itemData) => <GuessLogItem roundNumber={guessRoundsLength - itemData.index} guess={itemData.item}/>} 
                 keyExtractor={(item) => item} 
                 alwaysBounceVertical={false}/>
            </View>
@@ -95,5 +98,10 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 12,
     },
+
+    listContainer:{
+        flex: 1,
+        padding: 16,
+    }
     
 });
