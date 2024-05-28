@@ -7,7 +7,6 @@ import Colors from './consts/colors';
 import GameOver from './screens/GameOver';
 import {useFonts} from 'expo-font';
 import AppLoading from 'expo-app-loading';
-
 export default function App() {
   const [userNumber,setUserNumber] = useState();
   const [gameIsOver,setGameIsOver] = useState(true);
@@ -18,7 +17,7 @@ export default function App() {
 
   });
   if(!fontsLoaded){
-    return <AppLoading />
+    return <AppLoading />;
   }
   function pickedNumberHandler(pickedNumber){
     setUserNumber(pickedNumber);
@@ -46,7 +45,7 @@ export default function App() {
   }
 
   return (
-    <LinearGradient colors={[Colors.primary700,Colors.accent500]} style={styles.rootScreen}>
+    <LinearGradient colors={[Colors.primary700,Colors.accent500]} style={styles.rootScreen} >
       <ImageBackground 
         source={require('./assets/images/background.jpg')} 
         resizeMode='cover'
