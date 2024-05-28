@@ -10,7 +10,7 @@ export default Card;
 const deviceWith = Dimensions.get("window").width;
 const styles = StyleSheet.create({
     card:{
-        marginTop: 36,
+        marginTop: deviceWith < 380? 18 : 36,
         padding: deviceWith < 380? 12 : 24,
         borderRadius: 8,
         marginHorizontal: 24,
