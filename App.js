@@ -8,6 +8,7 @@ import GameOver from './screens/GameOver';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -82,6 +83,8 @@ export default function App() {
   }
 
   return (
+    <>
+    <StatusBar style='light' />
     <LinearGradient colors={[Colors.primary700,Colors.accent500]} style={styles.rootScreen} onLayout={onLayoutRootView} >
       <ImageBackground 
         source={require('./assets/images/background.jpg')} 
@@ -93,6 +96,7 @@ export default function App() {
         </SafeAreaView>
       </ImageBackground>
     </LinearGradient>
+    </>
   );
 }
 
