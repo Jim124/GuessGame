@@ -1,4 +1,4 @@
-import {View,StyleSheet, Alert,Text, FlatList} from 'react-native'
+import {View,StyleSheet, Alert,FlatList,useWindowDimensions} from 'react-native'
 import Title from '../components/ui/Title';
 import { useState,useEffect } from 'react';
 import NumberContainer from '../components/game/NumberContainer';
@@ -24,6 +24,7 @@ function generateRandomBetween(min,max,exclude){
 let minBoundary = 1;
 let maxBoundary = 100;
 function GameScreen({userNumber,onGameOver}) {
+    const {width,height} = useWindowDimensions();
     const initNumber = generateRandomBetween(1,100,userNumber);
     const [currentGuess,setCurrentGuess] = useState(initNumber);
     const [guessRounds,setGuessRounds] = useState([initNumber]);
@@ -55,11 +56,10 @@ function GameScreen({userNumber,onGameOver}) {
     },[]);
 
     const guessRoundsLength = guessRounds.length;
-    
-    return (
-        <View style={styles.screen}>
-            <Title>Opponent's Guess</Title>
-            <NumberContainer>{currentGuess}</NumberContainer>
+
+    let content = 
+    <>
+        <NumberContainer>{currentGuess}</NumberContainer>
             <Card>
                 <InstructionText style={styles.instructionText}>Higher Or Lower</InstructionText>
                 <View style={styles.buttonsContainer}>
@@ -71,12 +71,32 @@ function GameScreen({userNumber,onGameOver}) {
                     </View>
                 </View>
             </Card>
+    </>
+    if(width > 500) {
+        content = 
+        <>
+            <View style={styles.buttonContainerWide}>
+                <View style={styles.buttonContainer}>
+                    <Primarybutton onPress={nextGuessHandler.bind(this,'lower')}><AntDesign name="minus" size={24} color='white' /></Primarybutton>
+                </View>
+                <NumberContainer>{currentGuess}</NumberContainer>
+                <View style={styles.buttonContainer}>
+                    <Primarybutton onPress={nextGuessHandler.bind(this,'greater')}><Ionicons name="add" size={24} color='white'/></Primarybutton>
+                </View>
+            </View>
+        </>
+    }
+    
+    return (
+        <View style={styles.screen}>
+            <Title>Opponent's Guess</Title>
+            {content}
            <View style={styles.listContainer}>
             {/* {guessRounds.map(round =><Text key={round}>{round}</Text>)} */}
-            <FlatList data={guessRounds} 
-                renderItem={(itemData) => <GuessLogItem roundNumber={guessRoundsLength - itemData.index} guess={itemData.item}/>} 
-                keyExtractor={(item) => item} 
-                alwaysBounceVertical={false}/>
+                <FlatList data={guessRounds} 
+                    renderItem={(itemData) => <GuessLogItem roundNumber={guessRoundsLength - itemData.index} guess={itemData.item}/>} 
+                    keyExtractor={(item) => item} 
+                    alwaysBounceVertical={false}/>
            </View>
         </View>
     )
@@ -87,6 +107,10 @@ export default GameScreen
 const styles = StyleSheet.create({
     buttonsContainer:{
         flexDirection: 'row'
+    },
+    buttonContainerWide:{
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     instructionText:{
         marginBottom: 12,
